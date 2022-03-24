@@ -27,7 +27,11 @@ jobs:
       - run:
           name: Deploy to Heroku
           command:
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/fastapi-heroku-cicd.git main
+	    sudo curl https://cli-assets.heroku.com/install.sh | sh
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push web --app algo-lib
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release web --app algo-lib
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/algo-lib.git main
     
 workflows:  
   build-test-and-deploy:    
