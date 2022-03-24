@@ -18,14 +18,6 @@ jobs:
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
-      - run: 
-          name: Running npm test
-          command: |
-            npm run test
-      - run:
-          name: Codecov coverage
-          command: |
-            npm run coverage
       - setup_remote_docker:
           version: 18.06.0-ce
       - run:
