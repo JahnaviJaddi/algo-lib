@@ -14,3 +14,4 @@ COPY ./model_weights /app/model_weights
 EXPOSE $PORT
 
 CMD ["npm", "run", "start"]
+CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT
