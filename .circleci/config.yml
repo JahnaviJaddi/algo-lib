@@ -1,47 +1,53 @@
 version: 2.1
-
-orbs:  
-  python: circleci/python@1.0.0
-
-jobs:  
-  build-and-test:    
-    executor:
-      name: python/default
-      tag: '3.7'
+orbs:
+  node: circleci/node@3.0.1
+  heroku: circleci/heroku@1.0.1
+jobs:
+  build-and-test:
+    executor: node/default
     steps:
       - checkout
-      - run:
-          name: Setup Virtual env
-          command:
-            python3 -m venv env           
-            .\env\Scripts\activate 
-      - run:
-          name: Install Dependencies
-          command: pip install -r requirements.txt
-  deploy:
-    executor:
-      name: python/default
-      tag: '3.7'
-    steps:
-      - checkout
-      - run:
-          name: Deploy to Heroku
+      - node/install-packages
+      - run: 
+          name: Running npm test
           command: |
-            sudo curl https://cli-assets.heroku.com/install.sh | sh
-            HEROKU_API_KEY=$HEROKU_TOKEN heroku container:login
-            HEROKU_API_KEY=$HEROKU_TOKEN heroku container:push -a algo-lib web
-            HEROKU_API_KEY=$HEROKU_TOKEN heroku container:release -a algo-lib web
-    
-workflows:  
-  build-test-and-deploy:    
-    jobs:      
-      - build-and-test:
-          filters:            
-            branches:
-              only:
-                - main
+            npm run test
+      - run:
+          name: Codecov coverage
+          command: |
+            npm run coverage
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t heroku-dockerize:circleci .
+            docker images
+  deploy:
+    executor: heroku/default
+    steps:
+      - checkout
+      - run:
+          name: Storing previous commit
+          command: |
+            git rev-parse HEAD > ./commit.txt
+      - heroku/install
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run:
+          name: Pushing to heroku registry
+          command: |
+            heroku container:login
+            heroku container:push web --arg NODE_ENV=production -a $HEROKU_APP_NAME
+            heroku container:release web -a $HEROKU_APP_NAME
+workflows:
+  build-test-deploy:
+    jobs:
+      - build-and-test
       - deploy:
-          filters:            
+          requires:
+            - build-and-test
+          filters:
             branches:
               only:
-                - main
+                - master
