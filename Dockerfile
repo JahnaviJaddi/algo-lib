@@ -6,6 +6,8 @@ ARG NODE_ENV=development
 ARG PORT=3000
 ENV PORT=$PORT
 
+RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN pip install -r requirements.txt
 
 COPY ./app /app/app
