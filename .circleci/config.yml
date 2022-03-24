@@ -31,7 +31,7 @@ jobs:
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push web --app algo-lib
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release web --app algo-lib
-	    git push https://heroku:$HEROKU_API_KEY@git.heroku.com/algo-lib.git main
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/algo-lib.git main
     
 workflows:  
   build-test-and-deploy:    
