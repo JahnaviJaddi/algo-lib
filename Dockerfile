@@ -8,7 +8,7 @@ ENV PORT=$PORT
 
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
-RUN apt-get install -y libgl1-mesa-dev
+
 RUN pip install -r requirements.txt
 
 COPY ./app /app/app
