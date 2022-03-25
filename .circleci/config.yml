@@ -45,10 +45,12 @@ jobs:
 workflows:
   build-test-deploy:
     jobs:
-      - build-and-test
       - deploy:
-          requires:
-            - build-and-test
+          filters:            
+            branches:
+              only:
+                - main
+      - build-and-test:
           filters:
             branches:
               only:
