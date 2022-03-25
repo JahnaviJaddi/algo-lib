@@ -10,10 +10,12 @@ RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 
 RUN pip install -r requirements.txt
+RUN pip3 install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio===0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+
 
 COPY ./app /app/app
 COPY ./model_weights /app/model_weights
 
 EXPOSE $PORT
 
-CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT
+#CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT
