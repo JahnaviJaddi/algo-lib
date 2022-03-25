@@ -25,18 +25,7 @@ jobs:
           command: |
             docker build -t heroku-dockerize:circleci .
             docker images
-  test:
- 
-      docker:
-        - image: themattrix/tox
- 
-      steps:
- 
-        - checkout
- 
-        - run: pip install tox
- 
-        - run: tox
+  
   deploy:
     executor: heroku/default
     steps:
@@ -54,15 +43,28 @@ jobs:
             heroku container:login
             heroku container:push web --arg NODE_ENV=production -a $HEROKU_APP_NAME
             heroku container:release web -a $HEROKU_APP_NAME
+  test:
+ 
+      docker:
+        - image: themattrix/tox
+ 
+      steps:
+ 
+        - checkout
+ 
+        - run: pip install tox
+ 
+        - run: tox
 workflows:
   build-test-deploy:
     jobs:
-      - test:
+      
+      - build-and-test:
           filters:            
             branches:
               only:
                 - main
-      - build-and-test:
+      - test:
           filters:            
             branches:
               only:
