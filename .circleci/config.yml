@@ -58,10 +58,8 @@ jobs:
            command:
               python3 -m venv env           
               .\env\Scripts\activate 
-      
-        - run: pip install tox
- 
-        - run: tox --result-json=./tests/test_results.xml
+              pytest --junitxml=./tests/test_results.xml tests
+        
         - store_test_results:
             path: ./tests/test_results.xml
   
