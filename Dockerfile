@@ -6,8 +6,10 @@ ARG NODE_ENV=development
 ARG PORT=3000
 ENV PORT=$PORT
 
+
+
 RUN apt-get update
-#RUN apt-get install ffmpeg libsm6 libxext6  -y
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN apt-get install -y libgl1-mesa-dev
 RUN apt-get install python3-opencv
 
