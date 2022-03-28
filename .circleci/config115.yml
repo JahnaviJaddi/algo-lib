@@ -26,42 +26,6 @@ jobs:
             docker build -t heroku-dockerize:circleci .
             docker images
   
-  build:
-    executor: 
-      name: python/default
-      tag: '3.7'
-    steps:
-      - checkout
-      - run:
-          name: Setup Virtual env
-          command:
-            python3 -m venv env           
-            .\env\Scripts\activate 
-      - run:
-          name: Install Dependencies
-          command: pip install -r requirements.txt
-      - setup_remote_docker:
-          version: 18.06.0-ce
-      - run:
-          name: Build Docker image
-          command: |
-            docker build -t heroku-dockerize:circleci .
-            docker images
-  test:
-      docker:
-        - image: python:3.7
-      steps: 
-        - checkout
-    
-        - run:
-           command:
-              python3 -m venv env           
-              .\env\Scripts\activate 
-      
-        - run: pip install tox
- 
-        - run: tox
-  
   deploy:
     executor: heroku/default
     steps:
@@ -79,28 +43,23 @@ jobs:
             heroku container:login
             heroku container:push web --arg NODE_ENV=production -a $HEROKU_APP_NAME
             heroku container:release web -a $HEROKU_APP_NAME
-      
+      - run: pip install tox
+ 
+      - run: tox
   
 workflows:
   build-test-deploy:
     jobs:
       
-      - build:
-          filters:            
-            branches:
-              only:
-                - main
-      - test:
+      - build-and-test:
           requires:
-            - build
+            - deploy
           filters:            
             branches:
               only:
                 - main
       
       - deploy:
-          requires:
-            - test
           filters:            
             branches:
               only:
