@@ -6,8 +6,12 @@ ARG NODE_ENV=development
 ARG PORT=3000
 ENV PORT=$PORT
 
-RUN python3 -m venv env
-RUN ./env/bin/activate 
+#RUN python3 -m venv env
+ENV VIRTUAL_ENV=/env
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+#RUN ./env/bin/activate 
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN apt-get install -y libgl1-mesa-dev
