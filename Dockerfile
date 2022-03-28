@@ -7,7 +7,7 @@ ARG PORT=3000
 ENV PORT=$PORT
 
 RUN python3 -m venv env
-RUN ./env/Scripts/activate 
+RUN ./env/bin/activate 
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN apt-get install -y libgl1-mesa-dev
