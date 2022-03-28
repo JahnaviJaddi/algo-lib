@@ -56,7 +56,6 @@ jobs:
     
         - run:
            command:
-              python3 -m venv env           
               .\env\Scripts\activate 
               pytest --junitxml=./tests/test_results.xml tests
         
