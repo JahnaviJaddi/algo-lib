@@ -43,22 +43,34 @@ jobs:
             heroku container:login
             heroku container:push web --arg NODE_ENV=production -a $HEROKU_APP_NAME
             heroku container:release web -a $HEROKU_APP_NAME
-      - run: pip install tox
+  test:
  
-      - run: tox
-  
+      docker:
+        - image: themattrix/tox
+ 
+      steps:
+ 
+        - checkout
+ 
+        - run: pip install tox
+ 
+        - run: tox
 workflows:
   build-test-deploy:
     jobs:
       
       - build-and-test:
-          requires:
-            - deploy
           filters:            
             branches:
               only:
                 - main
-      
+      - test:
+          requires:
+            - deploy          
+          filters:            
+            branches:
+              only:
+                - main
       - deploy:
           filters:            
             branches:
