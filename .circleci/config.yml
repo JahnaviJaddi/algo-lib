@@ -65,6 +65,8 @@ workflows:
               only:
                 - main
       - test:
+          requires:
+            - deploy          
           filters:            
             branches:
               only:
