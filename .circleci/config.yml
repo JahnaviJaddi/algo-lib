@@ -56,7 +56,7 @@ jobs:
     
         - run:
            command:
-              .\env\Scripts\activate 
+              ./env/Scripts/activate 
               pytest --junitxml=./tests/test_results.xml tests
         
         - store_test_results:
