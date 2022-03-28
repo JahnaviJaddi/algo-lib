@@ -62,6 +62,8 @@ jobs:
         - run: pip install tox
  
         - run: tox
+        - store_test_results:
+            path: test
   
   deploy:
     executor: heroku/default
