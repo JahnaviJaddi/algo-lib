@@ -2,7 +2,9 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.1
   heroku: circleci/heroku@1.0.1
-  python: circleci/python@1.0.0
+  python: circleci/python@1.5.0
+  docker: circleci/docker@1.0.1
+  
 jobs:
   build-and-test:
     executor: 
@@ -27,6 +29,8 @@ jobs:
             docker images
   
   build:
+    docker:
+      - image: circleci/python:3.8
     executor: 
       name: python/default
       tag: '3.8'
@@ -34,7 +38,7 @@ jobs:
       - checkout
       - run:
           name: Setup Virtual env
-          command: 
+          command: |-
             python3 -m venv env           
             .\env\Scripts\activate 
       - run:
