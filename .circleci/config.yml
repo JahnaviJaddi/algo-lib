@@ -34,7 +34,7 @@ jobs:
       - checkout
       - run:
           name: Setup Virtual env
-          command:
+          command:|
             python3 -m venv env           
             .\env\Scripts\activate 
       - run:
@@ -59,6 +59,7 @@ jobs:
         - checkout
     
         - run:
+           name: Activating environment and pytest
            command: |
             ./env/bin/activate
             mkdir test-results
