@@ -1,0 +1,129 @@
+version: 2.1
+orbs:
+  node: circleci/node@3.0.1
+  heroku: circleci/heroku@1.0.1
+  python: circleci/python@1.0.0
+jobs:
+  build-and-test:
+    executor: 
+      name: python/default
+      tag: '3.8'
+    steps:
+      - checkout
+      - run:
+          name: Setup Virtual env
+          command:
+            python3 -m venv env           
+            .\env\Scripts\activate 
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t heroku-dockerize:circleci .
+            docker images
+  
+  build:
+    executor: 
+      name: python/default
+      tag: '3.8'
+    steps:
+      - checkout
+      - run:
+          name: Setup Virtual env
+          command:
+            python3 -m venv env           
+            .\env\Scripts\activate 
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+          - ./env
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t heroku-dockerize:circleci .
+            docker images
+  test:
+    docker:
+      - image: python:3.8
+    steps: 
+      - checkout
+      - run:
+          name: activate virtual env
+          command:
+            .\env\Scripts\activate 
+      - run:
+          command:
+            . env/bin/activate
+            mkdir test-results
+            pytest --junitxml=test-results/junit.xml
+      
+<<<<<<< HEAD
+      docker:
+        - image: circleci/python:3.8
+      steps: 
+        - checkout
+    
+        - run:
+           command: |
+            . env/bin/activate
+            mkdir test-results
+            pytest --junitxml=test-results/junit.xml
+        
+        - store_test_results:
+            path: tests/test-results/junit.xml
+=======
+>>>>>>> e61916716e7f8c3e03d66b8074a51d04fe7b15ab
+  
+  deploy:
+    executor: heroku/default
+    steps:
+      - checkout
+      - run:
+          name: Storing previous commit
+          command: |
+            git rev-parse HEAD > ./commit.txt
+      - heroku/install
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run:
+          name: Pushing to heroku registry
+          command: |
+            heroku container:login
+            heroku container:push web --arg NODE_ENV=production -a $HEROKU_APP_NAME
+            heroku container:release web -a $HEROKU_APP_NAME
+      
+  
+workflows:
+  build-test-deploy:
+    jobs:
+      
+      - build:
+          filters:            
+            branches:
+              only:
+                - main
+      - test:
+          requires:
+            - build
+          filters:            
+            branches:
+              only:
+                - main
+      
+      - deploy:
+          requires:
+            - test
+          filters:            
+            branches:
+              only:
+                - main
+      
