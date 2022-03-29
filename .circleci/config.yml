@@ -60,7 +60,7 @@ jobs:
     
         - run:
            command: |
-            . env/bin/activate
+            .\env\Scripts\activate
             mkdir test-results
             pytest --junitxml=test-results/junit.xml
         
