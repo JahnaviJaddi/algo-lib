@@ -61,7 +61,7 @@ jobs:
         - run:
            name: Activating environment and pytest
            command: |
-            ./env/bin/activate
+            source env/bin/activate
             mkdir test-results
             pytest --junitxml=test-results/junit.xml
         
