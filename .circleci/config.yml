@@ -59,7 +59,7 @@ jobs:
         - image: circleci/python:3.8
       steps: 
         - checkout
-        - save_cache:
+        - restore_cache:
            key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
         - run:
            name: Activating environment and pytest
