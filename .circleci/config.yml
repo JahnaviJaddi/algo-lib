@@ -12,9 +12,9 @@ jobs:
       - checkout
       - run:
           name: Setup Virtual env
-          command:
+          command: |
             python3 -m venv env           
-            .\env\Scripts\activate 
+            . /env/bin/activate 
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
@@ -34,15 +34,15 @@ jobs:
       - checkout
       - run:
           name: Setup Virtual env
-          command:
+          command: |
             python3 -m venv env           
-            .\env\Scripts\activate 
+            . /env/bin/activate 
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
       - save_cache:
           paths:
-          - .\env
+          - env/
           key: v1-dependencies-{{ checksum "requirements.txt" }}
       - setup_remote_docker:
           version: 18.06.0-ce
@@ -61,7 +61,7 @@ jobs:
         - run:
            name: Activating environment and pytest
            command: |
-            source env/bin/activate
+            . /env/bin/activate
             mkdir test-results
             pytest --junitxml=test-results/junit.xml
         
