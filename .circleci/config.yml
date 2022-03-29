@@ -48,19 +48,20 @@ jobs:
             docker build -t heroku-dockerize:circleci .
             docker images
   test:
+    docker:
+      - image: python:3.8
+    steps: 
+      - checkout
+      - run:
+          name: activate virtual env
+          command:
+            .\env\Scripts\activate 
+      - run:
+          command:
+            . env/bin/activate
+            mkdir test-results
+            pytest --junitxml=test-results/junit.xml
       
-      docker:
-        - image: python:3.8
-      steps: 
-        - checkout
-    
-        - run:
-           command:
-              ./env/Scripts/activate 
-              pytest --junitxml=./tests/test_results.xml tests
-        
-        - store_test_results:
-            path: ./tests/test_results.xml
   
   deploy:
     executor: heroku/default
