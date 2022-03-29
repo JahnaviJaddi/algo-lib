@@ -70,8 +70,9 @@ jobs:
            command: |
             . venv/bin/activate
             pip install pytest
+            pip install tox
             mkdir test-results
-            pytest -v
+            tox
         
         
   
