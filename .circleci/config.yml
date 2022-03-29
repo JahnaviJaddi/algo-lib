@@ -13,10 +13,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Setup virtual environment
           command: |
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            pip install pytest
       - save_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
@@ -42,6 +44,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            pip install pytest
       - save_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
@@ -65,12 +68,10 @@ jobs:
            name: Activating environment and pytest
            command: |
             . venv/bin/activate
-            pip install pytest
             mkdir test-results
-            pytest --junitxml=test-results/junit.xml
+            pytest -v
         
-        - store_test_results:
-            path: tests/test-results/junit.xml
+        
   
   deploy:
     executor: heroku/default
