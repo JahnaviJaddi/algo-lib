@@ -65,6 +65,7 @@ jobs:
            name: Activating environment and pytest
            command: |
             . venv/bin/activate
+            pip install pytest
             mkdir test-results
             pytest --junitxml=test-results/junit.xml
         
