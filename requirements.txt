@@ -83,7 +83,7 @@ coverage
 
 
 --find-links --extra-index-url https://download.pytorch.org/whl/cu113
-torch
-torchvision 
+torch==1.9.1
+torchvision==0.10.1 
 torchaudio 
 
