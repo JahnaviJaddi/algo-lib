@@ -72,7 +72,7 @@ jobs:
            name: Activating environment and pytest
            command: |
             . venv/bin/activate
-            tox
+            pytest tests -p no:warnings
         
         
   
