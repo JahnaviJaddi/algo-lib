@@ -10,6 +10,7 @@ jobs:
     executor: 
       name: python/default
       tag: '3.8'
+    working_directory: ~/repo
     steps:
       - checkout
       - run:
@@ -37,6 +38,7 @@ jobs:
     executor: 
       name: python/default
       tag: '3.8'
+    working_directory: ~/repo
     steps:
       - checkout
       - run:
@@ -45,11 +47,11 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
-            pip install pytest
+            
       - save_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
-            - "venv"          
+            - ./venv
       - setup_remote_docker:
           version: 18.06.0-ce
       - run:
@@ -61,6 +63,7 @@ jobs:
       
       docker:
         - image: circleci/python:3.8
+      working_directory: ~/repo
       steps: 
         - checkout
         - restore_cache:
@@ -69,8 +72,7 @@ jobs:
            name: Activating environment and pytest
            command: |
             . venv/bin/activate
-            pip install pytest
-            pip install tox
+            
             mkdir test-results
             tox
         
