@@ -32,28 +32,4 @@ def test_upload_weights():
     
     assert response.json()== {'filename': filename_}
 
-def test_yolov5_detect():
-    url = "/detect"
-    # ------------------ working ---------------
-    multiple_files_ =[
-    ('files', ('example1.png', open(cur_path+'/input/images/example1.png', 'rb'), 'image/png')),
-    ('files', ('example2.png', open(cur_path+'/input/images/example2.png', 'rb'), 'image/png'))]
-    # response=client.post(url,files=multiple_files_)
-    # ---------------------------------------------
-    
-    data={
-    "weights":"yolov5s6",
-    "save_upload_to_file":True}
-    
-    
-    
-    response=client.post(url,params=data,files=multiple_files_)
-    result=response.json()
-    im=result['results'][0]
-    
-    image1=result['results'][0]['name']
-    image2=result['results'][1]['name']
-    
-    assert image1 == {'0': 'zebra', '1': 'zebra', '2': 'zebra'}
-    assert image2 == {'0': 'person', '1': 'bus'}    
-    
+

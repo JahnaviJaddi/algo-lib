@@ -20,7 +20,7 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
             pip install pytest
-            wget https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5s6.pt-o model_weights/yolov5/yolov5s6.pt
+            
       - save_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
