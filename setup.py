@@ -6,8 +6,8 @@ from pathlib import Path
 from setuptools import find_packages, setup
 
 # Package meta-data.
-NAME = "sample"
-DESCRIPTION = "Tox automation example"
+NAME = "Algo-Lib"
+DESCRIPTION = "Algorithm library"
 AUTHOR = "Jahnavi"
 REQUIRES_PYTHON = ">=3.8.0"
 
@@ -26,11 +26,11 @@ setup(
     python_requires=REQUIRES_PYTHON,
     #url=URL,
     packages=find_packages(exclude=("tests",)),
-    package_data={"calculations": ["VERSION"], "texts":["VERSION"]},
+    #package_data={"calculations": ["VERSION"], "texts":["VERSION"]},
     #install_requires=["numpy==1.16.6"],
     extras_require={},
     include_package_data=True,
-    license="BSD-3",
+    #license="BSD-3",
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
