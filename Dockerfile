@@ -18,7 +18,7 @@ RUN apt-get install -y libgl1-mesa-dev
 RUN apt-get update && apt-get install -y python3-opencv
 RUN pip install opencv-python
 RUN apt-get install python3-opencv
-RUN apt-get install python3-sqlalchemy
+RUN apt-get install python3-sqlalchemy -y
 
 #RUN pip3 install torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio===0.9.0 -f https://download.pytorch.org/whl/torch_stable.html --user
 RUN pip install -r requirements.txt
