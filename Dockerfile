@@ -3,11 +3,11 @@ FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 COPY requirements.txt ./
 
 #ARG NODE_ENV=development
-#ARG PORT=3000
-#ENV PORT=$PORT
+ARG PORT=3000
+ENV PORT=$PORT
 
 #RUN python3 -m venv env
-ENV VIRTUAL_ENV=/env
+ENV VIRTUAL_ENV=/opt/env
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
@@ -29,6 +29,6 @@ RUN pip install -r requirements.txt
 COPY ./app /app/app
 COPY ./model_weights /app/model_weights
 
-#EXPOSE $PORT
+EXPOSE $PORT
 
 #CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT
