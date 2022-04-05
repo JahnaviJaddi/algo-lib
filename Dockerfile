@@ -1,6 +1,6 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
-
-COPY requirements.txt ./
+WORKDIR /code
+COPY requirements.txt /code/requirements.txt
 
 #ARG NODE_ENV=development
 ARG PORT=3000
@@ -26,10 +26,11 @@ RUN pip install -r requirements.txt
 
 
 
-COPY ./app /app/app
-COPY ./model_weights /app/model_weights
+COPY ./app /code/app
+COPY ./model_weights /code/model_weights
 
 EXPOSE $PORT
 
 #CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT
-CMD web: uvicorn app.main:app --host=0.0.0.0 --port=${PORT}
+#CMD web: uvicorn app.main:app --host=0.0.0.0 --port=${PORT}
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "${PORT}"]
