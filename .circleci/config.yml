@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.1
-  heroku: circleci/heroku@1.0.1
+  heroku: circleci/heroku@x.y
   python: circleci/python@1.5.0
   docker: circleci/docker@1.0.1
   
@@ -122,4 +122,9 @@ workflows:
             branches:
               only:
                 - main
-      
+      - heroku/deploy-via-git:
+           requires:
+             - test # only run deploy-via-git job if the build job has completed
+           filters:
+             branches:
+               only: main # only run deploy-via-git job on main branch
