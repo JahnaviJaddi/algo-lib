@@ -32,3 +32,4 @@ COPY ./model_weights /app/model_weights
 EXPOSE $PORT
 
 #CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT
+CMD web: uvicorn app.main:app --host=0.0.0.0 --port=${PORT}
