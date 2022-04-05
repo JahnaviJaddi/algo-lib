@@ -11,7 +11,7 @@ ENV VIRTUAL_ENV=/env
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN source venv/bin/activate 
+RUN  venv/bin/activate 
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN apt-get install -y libgl1-mesa-dev
